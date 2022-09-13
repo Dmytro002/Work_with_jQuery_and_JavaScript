@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>YOUR TITLE HERE</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+
+    // Run after the Document DOM tree is constructed
+    $(document).ready(function () {  // or shorthand of $( function () {\
+      // Your jQuery scripts here!
+
+
+      div = $("<div>").html("Welcome from JQuery");
+      $("body").prepend(div);
+
+      div = document.createElement('div');
+      div.textContent = "Welcome from vanilla JS";
+      document.body.prepend(div);
+
+
+      $("#hide").click(function () {
+        $("#show-hide").hide();
+      });
+      $("#show").click(function () {
+        $("#show-hide").show();
+      });
+
+    });
+
+
+    function requestData() {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          const firstElem = JSON.parse(this.responseText)[0];
+          document.getElementById("get-demo").innerHTML = "<b>" + firstElem.title + "</b> </br>" + firstElem.body;
+
+        }
+      };
+      xhttp.open("GET", " https://jsonplaceholder.typicode.com/posts", true);
+
+
+      xhttp.send();
+    }
+
+    function sendData() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 201) {
+          console.log(xhttp.responseText);
+          document.getElementById("post-demo").innerHTML = JSON.parse(xhttp.responseText).title;
+        }
+      };
+      xhttp.open("POST", " https://jsonplaceholder.typicode.com/posts", false);
+      xhttp.setRequestHeader("Content-type", "application/json");
+
+      var obj = {};
+      obj.userId = 1;
+      obj.title = "foo";
+      obj.body = "bar";
+      xhttp.send(JSON.stringify(obj));
+
+    }
+
+
+  </script>
+</head>
+<body>
+<h1>Hello, world!</h1>
+
+<div style="background-color: #dddddd; padding: 8px;margin: 8px;">
+  <div id="show-hide" style="background-color: #b3d4fc; margin-bottom:8px;">I`m div that can be hidden by buttons!</div>
+  <button id="hide"> hide</button>
+  <button id="show"> show</button>
+</div>
+
+<div style="background-color: #dddddd; padding: 8px;margin: 8px;">
+  <button type="button" onclick="requestData()">Request data</button>
+  <div id="get-demo"></div>
+</div>
+
+<div style="background-color: #dddddd; padding: 8px;margin: 8px;">
+  <button type="button" onclick="sendData()">Send data</button>
+  <div id="post-demo"></div>
+</div>
+
+</body>
+</html>
